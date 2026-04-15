@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Countdown from '../components/Countdown.tsx';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const bulletins = (await getCollection('bulletins')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const latest = bulletins[0];
+---
+
+<Layout title="Operator Console" subtitle="// Secure Channel Established">
+  <section class="text-center py-10">
+    <h1 class="text-3xl md:text-5xl text-neon-cyan glow-cyan tracking-widest">
+      MACHIAVELLI MAINFRAME
+    </h1>
+    <p class="text-fg-dim mt-2 uppercase tracking-[0.25em] text-sm">
+      Window opens in
+    </p>
+    <div class="mt-8">
+      <Countdown client:load target="2027-04-04T19:00:00Z" />
+    </div>
+    <p class="mt-10 text-fg-dim max-w-xl mx-auto">
+      Registry operator toolkit. Awaiting authorisation. Review mission briefing,
+      monitor the intel feed, study the target dossier. The toolkit unlocks on the night.
+    </p>
+  </section>
+
+  {latest && (
+    <section class="mt-12 border border-neon-cyan/30 p-6">
+      <p class="text-xs uppercase tracking-[0.3em] text-neon-amber mb-2">Latest Intel</p>
+      <h2 class="text-xl text-neon-cyan mb-2">
+        <a href={`${base}bulletins/${latest.id}/`}>{latest.data.title}</a>
+      </h2>
+      <p class="text-fg-dim text-sm">{latest.data.summary}</p>
+    </section>
+  )}
+</Layout>

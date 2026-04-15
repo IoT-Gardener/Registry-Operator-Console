@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #05070a;
+  --color-bg-elev: #0b0f14;
+  --color-fg: #c8d4dc;
+  --color-fg-dim: #6b7a87;
+  --color-neon-cyan: #3df2ff;
+  --color-neon-magenta: #ff3ea8;
+  --color-neon-amber: #ffb347;
+  --color-neon-danger: #ff2d55;
+  --color-rust: #a5472a;
+
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  --font-display: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html, body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+  }
+  a {
+    color: var(--color-neon-cyan);
+    text-decoration: none;
+  }
+  a:hover {
+    text-shadow: 0 0 6px var(--color-neon-cyan);
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Scanlines — applied sparingly via .crt class */
+.crt::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(61, 242, 255, 0.03) 0,
+    rgba(61, 242, 255, 0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: screen;
+  z-index: 50;
+}
+
+.glow-cyan { text-shadow: 0 0 8px var(--color-neon-cyan); }
+.glow-magenta { text-shadow: 0 0 8px var(--color-neon-magenta); }

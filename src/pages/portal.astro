@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Toolkit // Locked" subtitle="// Authorisation Required">
+  <section class="max-w-md mx-auto mt-10 border border-neon-cyan/40 p-8">
+    <h1 class="text-xl text-neon-cyan glow-cyan mb-6 text-center tracking-widest">
+      OPERATOR LOGIN
+    </h1>
+
+    <form onsubmit="event.preventDefault(); document.getElementById('portal-msg').classList.remove('hidden');" class="flex flex-col gap-4">
+      <label class="flex flex-col gap-1 text-xs uppercase tracking-widest text-fg-dim">
+        Operator ID
+        <input type="text" class="bg-transparent border border-fg-dim/40 px-3 py-2 text-neon-cyan focus:border-neon-cyan outline-none" disabled placeholder="- - - - -" />
+      </label>
+      <label class="flex flex-col gap-1 text-xs uppercase tracking-widest text-fg-dim">
+        Access Cipher
+        <input type="password" class="bg-transparent border border-fg-dim/40 px-3 py-2 text-neon-cyan focus:border-neon-cyan outline-none" disabled placeholder="- - - - -" />
+      </label>
+      <button type="submit" class="mt-2 border border-neon-cyan/60 text-neon-cyan py-2 hover:bg-neon-cyan/10 tracking-widest text-sm">
+        ATTEMPT HANDSHAKE
+      </button>
+    </form>
+
+    <p id="portal-msg" class="hidden mt-6 text-neon-danger text-center text-sm tracking-widest glow-magenta">
+      // TOOLKIT OFFLINE — WINDOW NOT OPEN //
+    </p>
+  </section>
+
+  <p class="text-center text-fg-dim text-xs mt-8 tracking-widest">
+    TOOLKIT UNLOCKS ON OPERATION NIGHT. STAND BY.
+  </p>
+</Layout>

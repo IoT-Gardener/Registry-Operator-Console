@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+const { title = 'Registry Operator Console', subtitle } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const nav = [
+  { href: '', label: 'Console', match: '/' },
+  { href: 'briefing/', label: 'Briefing', match: '/briefing' },
+  { href: 'bulletins/', label: 'Intel Feed', match: '/bulletins' },
+  { href: 'dossier/', label: 'Target Dossier', match: '/dossier' },
+  { href: 'portal/', label: 'Toolkit', match: '/portal' },
+];
+const pathname = Astro.url.pathname.replace(base.replace(/\/$/, ''), '') || '/';
+const isActive = (match: string) =>
+  match === '/' ? pathname === '/' || pathname === '' : pathname.startsWith(match);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} // RRR</title>
+  </head>
+  <body class="crt min-h-screen">
+    <header class="border-b border-neon-cyan/30 px-6 py-4 flex items-center justify-between">
+      <a href={base} class="glow-cyan font-bold tracking-widest text-neon-cyan">
+        R.R.R. // OPERATOR CONSOLE
+      </a>
+      <nav class="flex gap-5 text-sm text-fg-dim">
+        {nav.map(({ href, label, match }) => (
+          <a
+            href={`${base}${href}`}
+            class:list={[
+              'hover:text-neon-cyan pb-0.5 border-b',
+              isActive(match)
+                ? 'text-neon-cyan border-neon-cyan glow-cyan'
+                : 'border-transparent',
+            ]}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-10">
+      {subtitle && <p class="text-neon-amber text-xs uppercase tracking-[0.3em] mb-2">{subtitle}</p>}
+      <slot />
+    </main>
+
+    <footer class="border-t border-neon-cyan/20 px-6 py-4 text-xs text-fg-dim text-center">
+      <p>RUST &amp; RUIN REGISTRY // UNAUTHORISED ACCESS LOGGED // ASH ACCORDS §3</p>
+    </footer>
+  </body>
+</html>

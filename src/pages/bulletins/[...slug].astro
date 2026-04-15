@@ -1,0 +1,25 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('bulletins');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} subtitle={`// ${entry.data.classification.toUpperCase()} // ${entry.data.date.toISOString().slice(0, 10)}`}>
+  <article class="prose prose-invert max-w-none">
+    <h1 class="text-3xl text-neon-cyan glow-cyan mb-2">{entry.data.title}</h1>
+    <p class="text-fg-dim italic mb-8">{entry.data.summary}</p>
+    <div class="text-fg leading-relaxed space-y-4">
+      <Content />
+    </div>
+  </article>
+</Layout>

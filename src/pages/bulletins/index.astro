@@ -1,0 +1,27 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const entries = (await getCollection('bulletins')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout title="Intel Feed" subtitle="// Registry Dispatch — Chronological">
+  <h1 class="text-3xl text-neon-cyan glow-cyan mb-8">Intel Feed</h1>
+
+  <ul class="flex flex-col gap-6">
+    {entries.map((entry) => (
+      <li class="border-l-2 border-neon-cyan/40 pl-4">
+        <p class="text-xs text-fg-dim tracking-widest uppercase">
+          {entry.data.date.toISOString().slice(0, 10)} // {entry.data.classification.toUpperCase()}
+        </p>
+        <h2 class="text-lg text-neon-cyan mt-1">
+          <a href={`${base}bulletins/${entry.id}/`}>{entry.data.title}</a>
+        </h2>
+        <p class="text-fg-dim text-sm mt-1">{entry.data.summary}</p>
+      </li>
+    ))}
+  </ul>
+</Layout>

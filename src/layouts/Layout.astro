@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -25,8 +26,39 @@ const isActive = (match: string) =>
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} // RRR</title>
+    <ClientRouter />
+    <script>
+      document.addEventListener('astro:after-swap', () => {
+        const body = document.body;
+        body.classList.remove('replay');
+        void body.offsetWidth;
+        body.classList.add('replay');
+      });
+
+      // Periodic idle glitches. First glitch fires 6-14s in so it is visible
+      // within a normal test window; subsequent glitches at 15-40s.
+      let idleTimer: ReturnType<typeof setTimeout> | null = null;
+      let firstFired = false;
+      function scheduleIdleGlitch() {
+        if (idleTimer) clearTimeout(idleTimer);
+        const delay = firstFired
+          ? 15000 + Math.random() * 25000
+          : 6000 + Math.random() * 8000;
+        idleTimer = setTimeout(() => {
+          firstFired = true;
+          const body = document.body;
+          if (!body.classList.contains('replay-active')) {
+            body.classList.add('idle-glitch');
+            setTimeout(() => body.classList.remove('idle-glitch'), 700);
+          }
+          scheduleIdleGlitch();
+        }, delay);
+      }
+      scheduleIdleGlitch();
+      document.addEventListener('astro:after-swap', scheduleIdleGlitch);
+    </script>
   </head>
-  <body class="crt min-h-screen">
+  <body class="crt replay min-h-screen">
     <header class="border-b border-neon-cyan/30 px-6 py-4 flex items-center justify-between">
       <a href={base} class="glow-cyan font-bold tracking-widest text-neon-cyan">
         R.R.R. // OPERATOR CONSOLE
